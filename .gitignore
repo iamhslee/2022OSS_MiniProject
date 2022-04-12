@@ -1,2 +1,4 @@
-
 .DS_Store
+*.o
+shop
+shop_debug
