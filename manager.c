@@ -46,12 +46,24 @@ int loadData(Product *p[], char fileName[]) {
             p[count] = (Product *)malloc(sizeof(Product));
             int ret = fscanf(fp, "%[^\n]\n%[^\n]\n%[^\n]\n%d\n%d\n", p[count]->name, p[count]->info, p[count]->weight, &p[count]->price, &p[count]->deliveryType);
             #ifdef DEBUG
-            printf("=> DEBUG: Function > loadData() > Line: %d\n", count + 1);
-            printf("=> DEBUG: Function > loadData() > %s %s %s %d %d\n", p[count]->name, p[count]->info, p[count]->weight, p[count]->price, p[count]->deliveryType);
-            printf("=> DEBUG: Function > loadData() > Format count: %d\n", ret);
+            printf("=> DEBUG: Function > loadData() > Batch: %d\n", count + 1);
+            
             #endif
-	    if(ret < 5) continue;
-	    count++;
+	        if(ret < 5) {
+                #ifdef DEBUG
+                printf("=> DEBUG: Function > loadData() > Batch: %d\n not loaded properly. Skip...", count + 1);
+                printf("=> DEBUG: Function > loadData() > Format count: %d\n", ret);
+                #endif
+                continue;
+            }
+            else {
+                #ifdef DEBUG
+                printf("=> DEBUG: Function > loadData() > Batch: %d\n loaded properly.\n", count + 1);
+                printf("=> DEBUG: Function > loadData() > Raw Data: %s / %s / %s / %d / %d\n", p[count]->name, p[count]->info, p[count]->weight, p[count]->price, p[count]->deliveryType);
+                printf("=> DEBUG: Function > loadData() > Format count: %d\n", ret);
+                #endif
+                count++;
+            }
         }
         #ifdef DEBUG
         printf("=> DEBUG: Function > loadData() > Loaded Data: %d\n", count);
@@ -174,12 +186,11 @@ void readProduct(Product *p[], int count) {
         #ifdef DEBUG
         printf("=> DEBUG: Function > readProduct() > Index: %d\n", index);
         #endif
-        printf("=> 번호 %d : %10s ====================\n", index + 1, p[index]->name);
+        printf("=> 번호 %d : %10s ===============\n", index + 1, p[index]->name);
         printf("상품정보 : %s\n", p[index]->info);
         printf("상품중량 : %s\n", p[index]->weight);
         printf("상품가격 : %d\n", p[index]->price);
         printf("배송방법 (1: 새벽배송 / 2: 택배배송): %d\n", p[index]->deliveryType);
-        printf("==============================================\n");
     }
 }
 
@@ -196,7 +207,7 @@ void listProduct(Product *p[], int count) {
     printf("번호 상품명              상품중량   상품가격 배송방법\n");
     printf("-----------------------------------------------------\n");
     for(int i = 0; i < count; i++) {
-        printf("%4d %-25s %-10s %-8d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+        printf("%4d %-s %-s %-d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
     }
     printf("=====================================================\n");
 }
@@ -223,7 +234,7 @@ void searchProduct(Product *p[], int count) {
             #ifdef DEBUG
             printf("=> DEBUG: Function > searchProduct() > Keyword: %s , Index: %d\n", keyword, i);
             #endif
-            printf("%4d %-25s %-10s %-8d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+            printf("%4d %-s %-s %-d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
             flag = 1;
         }
     }
