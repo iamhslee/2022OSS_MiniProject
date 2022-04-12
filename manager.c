@@ -1,5 +1,7 @@
 #include "manager.h"
 
+char dType[2][20] = {"새벽배송", "택배배송"};
+
 int selectMenu() {
     #ifdef DEBUG
     printf("=> DEBUG: Function > selectMenu() Called\n");
@@ -164,7 +166,7 @@ void readProduct(Product *p[], int count) {
 
     if(index == 0) return;
     else if(index > count || index < 0) {
-        printf("=> 상품이 없습니다.\n");
+        printf("=> 입력한 상품이 없습니다.\n");
         return;
     }
     else {
@@ -172,11 +174,12 @@ void readProduct(Product *p[], int count) {
         #ifdef DEBUG
         printf("=> DEBUG: Function > readProduct() > Index: %d\n", index);
         #endif
-        printf("=> 상품명 : %s\n", p[index]->name);
-        printf("=> 상품정보 : %s\n", p[index]->info);
-        printf("=> 상품중량 : %s\n", p[index]->weight);
-        printf("=> 상품가격 : %d\n", p[index]->price);
-        printf("=> 배송방법 (1: 새벽배송 / 2: 택배배송): %d\n", p[index]->deliveryType);
+        printf("=> 번호 %d : %10s ====================\n", index + 1, p[index]->name);
+        printf("상품정보 : %s\n", p[index]->info);
+        printf("상품중량 : %s\n", p[index]->weight);
+        printf("상품가격 : %d\n", p[index]->price);
+        printf("배송방법 (1: 새벽배송 / 2: 택배배송): %d\n", p[index]->deliveryType);
+        printf("==============================================\n");
     }
 }
 
@@ -185,10 +188,17 @@ void listProduct(Product *p[], int count) {
     printf("=> DEBUG: Function > listProduct() Called\n");
     printf("=> DEBUG: Function > listProduct() > Count: %d\n", count);
     #endif
-    printf("\n상품번호\t상품명\t상품정보\t상품중량\t상품가격\t배송방법\n");
-    for(int i = 0; i < count; i++) {
-        printf("%d\t%s\t%s\t%s\t%d\t%d\n", i + 1, p[i]->name, p[i]->info, p[i]->weight, p[i]->price, p[i]->deliveryType);
+    if(count == 0) {
+        printf("\n=> 등록된 상품이 없습니다.\n");
+        return;
     }
+    printf("=> 상품 목록 ========================================\n");
+    printf("번호 상품명              상품중량   상품가격 배송방법\n");
+    printf("-----------------------------------------------------\n");
+    for(int i = 0; i < count; i++) {
+        printf("%4d %-25s %-10s %-8d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+    }
+    printf("=====================================================\n");
 }
 
 void searchProduct(Product *p[], int count) {
@@ -196,19 +206,29 @@ void searchProduct(Product *p[], int count) {
     printf("=> DEBUG: Function > searchProduct() Called\n");
     #endif
     char keyword[20];
+    if(count == 0) {
+        printf("\n=> 등록된 상품이 없습니다.\n");
+        return;
+    }
     printf("=> 검색할 상품명을 입력하세요 : ");
     scanf("%s", keyword);
     getchar();
 
-    printf("\n=> 상품번호\t상품명\t상품정보\t상품중량\t상품가격\t배송방법\n");
+    printf("=> 검색 목록 ========================================\n");
+    printf("번호 상품명              상품중량   상품가격 배송방법\n");
+    printf("-----------------------------------------------------\n");
+    int flag = 0;
     for(int i = 0; i < count; i++) {
         if(strstr(p[i]->name, keyword) != NULL) {
             #ifdef DEBUG
             printf("=> DEBUG: Function > searchProduct() > Keyword: %s , Index: %d\n", keyword, i);
             #endif
-            printf("%d\t%s\t%s\t%s\t%d\t%d\n", i + 1, p[i]->name, p[i]->info, p[i]->weight, p[i]->price, p[i]->deliveryType);
+            printf("%4d %-25s %-10s %-8d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+            flag = 1;
         }
     }
+    if(flag == 0) printf("\n=> 검색 결과가 없습니다.\n\n");
+    printf("=====================================================\n");
 }
 
 void saveData(Product *p[], int count, char filename[]) {
@@ -220,7 +240,7 @@ void saveData(Product *p[], int count, char filename[]) {
         #ifdef DEBUG
         printf("=> DEBUG: Function > saveData() > File \"%s\": Open Error\n", filename);
         #endif
-        printf("=> 파일 저장에 실패했습니다.\n");
+        printf("=> 상품 데이터 저장에 실패했습니다.\n");
         return;
     }
 
@@ -234,5 +254,5 @@ void saveData(Product *p[], int count, char filename[]) {
     #ifdef DEBUG
     printf("=> DEBUG: Function > saveData() > File \"%s\": Closed\n", filename);
     #endif
-    printf("=> 파일에 저장되었습니다.\n");
+    printf("=> 상품 데이터가 저장되었습니다.\n");
 }
