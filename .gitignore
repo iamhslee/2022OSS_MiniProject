@@ -2,3 +2,5 @@
 *.o
 shop
 shop_debug
+*.md
+*.txt
