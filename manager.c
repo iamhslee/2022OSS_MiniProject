@@ -216,13 +216,19 @@ void searchProduct(Product *p[], int count) {
     #ifdef DEBUG
     printf("=> DEBUG: Function > searchProduct() Called\n");
     #endif
+    int searchType;
     char keyword[20];
     if(count == 0) {
         printf("\n=> 등록된 상품이 없습니다.\n");
         return;
     }
-    printf("=> 검색할 상품명을 입력하세요 : ");
-    scanf("%s", keyword);
+    
+    printf("=> 검색 방식을 선택하세요. (1: 상품명 / 2: 상품정보 / 3: 상품가격): ");
+    scanf("%d", &searchType);
+    getchar();
+
+    printf("=> 검색어를 입력하세요 : ");
+    scanf("%[^\n]", keyword);
     getchar();
 
     printf("=> 검색 목록 ========================================\n");
@@ -230,12 +236,32 @@ void searchProduct(Product *p[], int count) {
     printf("-----------------------------------------------------\n");
     int flag = 0;
     for(int i = 0; i < count; i++) {
-        if(strstr(p[i]->name, keyword) != NULL) {
-            #ifdef DEBUG
-            printf("=> DEBUG: Function > searchProduct() > Keyword: %s , Index: %d\n", keyword, i);
-            #endif
-            printf("%4d %-s %-s %-d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
-            flag = 1;
+        if(searchType == 1) {
+            if(strstr(p[i]->name, keyword) != NULL) {
+                #ifdef DEBUG
+                printf("=> DEBUG: Function > searchProduct() > Keyword: %s , Index: %d\n", keyword, i);
+                #endif
+                printf("%4d %-s %-s %-d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+                flag = 1;
+            }
+        }
+        else if(searchType == 2) {
+            if(strstr(p[i]->info, keyword) != NULL) {
+                #ifdef DEBUG
+                printf("=> DEBUG: Function > searchProduct() > Keyword: %s , Index: %d\n", keyword, i);
+                #endif
+                printf("%4d %-s %-s %-d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+                flag = 1;
+            }
+        }
+        else if(searchType == 3) {
+            if(p[i]->price == atoi(keyword)) {
+                #ifdef DEBUG
+                printf("=> DEBUG: Function > searchProduct() > Keyword: %s , Index: %d\n", keyword, i);
+                #endif
+                printf("%4d %-s %-s %-d %-s\n", i + 1, p[i]->name, p[i]->weight, p[i]->price, dType[p[i]->deliveryType - 1]);
+                flag = 1;
+            }
         }
     }
     if(flag == 0) printf("\n=> 검색 결과가 없습니다.\n\n");
