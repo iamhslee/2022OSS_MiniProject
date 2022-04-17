@@ -4,3 +4,4 @@ shop
 shop_debug
 *.md
 *.txt
+/img
