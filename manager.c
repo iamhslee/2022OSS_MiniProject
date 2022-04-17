@@ -6,6 +6,7 @@ int selectMenu() {
     #ifdef DEBUG
     printf("=> DEBUG: Function > selectMenu() Called\n");
     #endif
+
     int select;
     printf("\n*** 쇼핑몰 관리 프로그램***\n\n");
     printf("1. 상품 등록\n");
@@ -19,9 +20,11 @@ int selectMenu() {
     printf("\n원하는 메뉴를 선택하세요: ");
     scanf("%d", &select);
     getchar();
+
     #ifdef DEBUG
     printf("=> DEBUG: selectMenu() > Selection = %d\n", select);
     #endif
+
     return select;
 }
 
@@ -29,12 +32,14 @@ int loadData(Product *p[], char fileName[]) {
     #ifdef DEBUG
     printf("=> DEBUG: Function > loadData() Called\n");
     #endif
+
     int count = 0;
     FILE *fp = fopen(fileName, "r");
     if (fp == NULL) {
         #ifdef DEBUG
         printf("=> DEBUG: Function > loadData() > File \"%s\": Open Error\n", fileName);
         #endif
+
         printf("=> 파일을 열 수 없습니다.\n");
         return count;
     }
@@ -42,18 +47,21 @@ int loadData(Product *p[], char fileName[]) {
         #ifdef DEBUG
         printf("=> DEBUG: Function > loadData() > File \"%s\": Opened\n", fileName);
         #endif
+
         while(!feof(fp)) {
             p[count] = (Product *)malloc(sizeof(Product));
             int ret = fscanf(fp, "%[^\n]\n%[^\n]\n%[^\n]\n%d\n%d\n", p[count]->name, p[count]->info, p[count]->weight, &p[count]->price, &p[count]->deliveryType);
+
             #ifdef DEBUG
             printf("=> DEBUG: Function > loadData() > Batch: %d\n", count + 1);
-            
             #endif
+
 	        if(ret < 5) {
                 #ifdef DEBUG
                 printf("=> DEBUG: Function > loadData() > Batch: %d\n not loaded properly. Skip...", count + 1);
                 printf("=> DEBUG: Function > loadData() > Format count: %d\n", ret);
                 #endif
+
                 continue;
             }
             else {
@@ -62,12 +70,14 @@ int loadData(Product *p[], char fileName[]) {
                 printf("=> DEBUG: Function > loadData() > Raw Data: %s / %s / %s / %d / %d\n", p[count]->name, p[count]->info, p[count]->weight, p[count]->price, p[count]->deliveryType);
                 printf("=> DEBUG: Function > loadData() > Format count: %d\n", ret);
                 #endif
+
                 count++;
             }
         }
         #ifdef DEBUG
         printf("=> DEBUG: Function > loadData() > Loaded Data: %d\n", count);
         #endif
+
         printf("=> %d개의 상품이 읽어졌습니다.\n", count);
         fclose(fp);
         return count;
@@ -78,9 +88,11 @@ int createProduct(Product *p[], int count) {
     #ifdef DEBUG
     printf("=> DEBUG: Function > createProduct() Called\n");
     #endif
+
     p[count] = (Product *)malloc(sizeof(Product));
+
     #ifdef DEBUG
-    printf("=> DEBUG: Function > createProduct() > Memory Allocated\n");
+    printf("=> DEBUG: Function > createProduct() > Memory allocated successfully\n");
     #endif
 
     printf("=> 상품명 : ");
@@ -272,6 +284,7 @@ void saveData(Product *p[], int count, char filename[]) {
     #ifdef DEBUG
     printf("=> DEBUG: Function > saveData() Called\n");
     #endif
+
     FILE *fp = fopen(filename, "w");
     if(fp == NULL) {
         #ifdef DEBUG
@@ -284,12 +297,15 @@ void saveData(Product *p[], int count, char filename[]) {
     #ifdef DEBUG
     printf("=> DEBUG: Function > saveData() > File \"%s\": Opened\n", filename);
     #endif
+
     for(int i = 0; i < count; i++) {
         fprintf(fp, "%s\n%s\n%s\n%d\n%d\n", p[i]->name, p[i]->info, p[i]->weight, p[i]->price, p[i]->deliveryType);
     }
     fclose(fp);
+
     #ifdef DEBUG
     printf("=> DEBUG: Function > saveData() > File \"%s\": Closed\n", filename);
     #endif
+
     printf("=> 상품 데이터가 저장되었습니다.\n");
 }
