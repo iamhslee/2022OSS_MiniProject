@@ -3,5 +3,6 @@
 shop
 shop_debug
 *.md
+*.pdf
 *.txt
 /img
