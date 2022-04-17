@@ -8,9 +8,11 @@ OBJECTS = main.c manager.c
 all : $(TARGET)
 
 $(TARGET) : $(OBJECTS)
+	echo "Build target : $(TARGET)"
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(DTARGET) : $(OBJECTS)
+	echo "Build target : $(DTARGET)"
 	$(CC) $(CFLAGS) -DDEBUG -o $@ $^
 
 clean :
