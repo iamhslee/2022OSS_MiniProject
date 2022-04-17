@@ -4,6 +4,7 @@ int main() {
     #ifdef DEBUG
     printf("=> DEBUG MODE\n\n");
     #endif
+
     Product *p[100];
     int count = loadData(p, "product.txt");
     while(1) {

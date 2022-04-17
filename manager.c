@@ -286,6 +286,7 @@ void saveData(Product *p[], int count, char filename[]) {
     #endif
 
     FILE *fp = fopen(filename, "w");
+
     if(fp == NULL) {
         #ifdef DEBUG
         printf("=> DEBUG: Function > saveData() > File \"%s\": Open Error\n", filename);
